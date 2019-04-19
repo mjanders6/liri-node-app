@@ -1,25 +1,43 @@
 require('dotenv').config()
-const keys = require('./keys.js')
-const [ , , request, search] = process.argv
+var keys = require('./keys.js')
+var Spotify = require('node-spotify-api');
+var [, , request, search] = process.argv
 
-const spotify = new spotify(keys.spotify)
+var spotify = new Spotify(keys.spotify)
 
-switch (request) {
-    case 'concert-this':
+ 
+// var spotify = new Spotify({
+//   id: '',
+//   secret: ''
+// });
+ 
+spotify
+  .search({ type: 'track', query: 'All the Small Things', limit:1})
+  .then(r => {
+      console.log(r.tracks.items[0].album.artists[0].name);
+    //   console.log(r.tracks.items.length);
+  })    
+  .catch(function(err) {
+    console.log(err);
+  });
 
-        break
-    case 'spotify-this-song':
+// switch (request) {
+//     case 'concert-this':
 
-        break
+//         break
 
-    case 'movie-this':
+//     case 'spotify-this-song':
 
-        break
+//         break
 
-    case 'do-what-it-says':
+//     case 'movie-this':
 
-        break
+//         break
 
-    default:
-        break
-}
+//     case 'do-what-it-says':
+
+//         break
+
+//     default:
+//         break
+// }
