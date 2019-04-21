@@ -5,26 +5,6 @@ var [, , request, ...search] = process.argv
 
 var spotify = new Spotify(keys.spotify)
 
-// spotify
-//   .search({ type: 'track', query: search.join(' ')})
-//   .then(r => {
-//     let trackSearch = r.tracks.items
-    
-//     //   console.log(r.tracks.items[0].album.artists[0].name);
-//       // console.log(r.tracks.items[0].name)
-//     trackSearch.forEach((trck, i) => {
-//         console.log(`
-//           Artist: ${r.tracks.items[i].album.artists[0].name}
-//           Song Name: ${r.tracks.items[i].name}
-//           Preview Link: ${r.tracks.items[i].album.external_urls.spotify}
-//           Album: ${r.tracks.items[i].album.name}
-//         `);
-//       })
-//   })    
-//   .catch(function(err) {
-//     console.log(err);
-//   });
-
 switch (request) {
   case 'concert-this':
 
@@ -33,18 +13,28 @@ switch (request) {
   case 'spotify-this-song':
     var spotify = new Spotify(keys.spotify)
 
+    let searchTerm = _ => {
+      if (search.join(' ').length < 1) {
+        let search = 'the room'
+        return search
+      } else {
+        let search1 = search.join(' ')
+        return search1
+      }
+    }
+
     spotify
-      .search({ type: 'track', query: search.join(' ')})
+      .search({ type: 'track', query: searchTerm(), limit: 5 })
       .then(r => {
         let trackSearch = r.tracks.items
-        //   console.log(r.tracks.items[0].album.artists[0].name);
-        // console.log(r.tracks.items[0].name)
+
         trackSearch.forEach((trck, i) => {
+
           console.log(`
-              Artist: ${r.tracks.items[i].album.artists[0].name}
-              Song Name: ${r.tracks.items[i].name}
-              Preview Link: ${r.tracks.items[i].album.external_urls.spotify}
-              Album: ${r.tracks.items[i].album.name}
+              Artist: ${trck.album.artists[0].name}
+              Song Name: ${trck.name}
+              Preview Link: ${trck.album.external_urls.spotify}
+              Album: ${trck.album.name}
             `);
         })
       })
