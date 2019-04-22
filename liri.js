@@ -11,7 +11,7 @@ switch (request) {
     // axios.get(`https://rest.bandsintown.com/artists/${search.join(' ')}/events?app_id=codingbootcamp&date=upcoming`)
     // .then(response => {
     //   console.log(response);
-      
+
     // })
     // .catch(e => console.log(e))
     break
@@ -50,10 +50,21 @@ switch (request) {
     break
 
   case 'movie-this':
-      axios.get(`http://www.omdbapi.com/?t=${search.join(' ')}&apikey=f8894189`)
+
+    let movieSearch = _ => {
+      if (search.join(' ').length < 1) {
+        let search = 'Mr. Nobody'
+        return search
+      } else {
+        let search1 = search.join(' ')
+        return search1
+      }
+    }
+
+    axios.get(`http://www.omdbapi.com/?t=${movieSearch()}&apikey=f8894189`)
       .then(({ data }) => {
         // console.log(data)
-        let {Title, Year, imdbRating, Ratings, Country, Language, Plot, Actors} = data
+        let { Title, Year, imdbRating, Ratings, Country, Language, Plot, Actors } = data
         console.log(`
           Title: ${Title}
           Year: ${Year}
@@ -65,7 +76,7 @@ switch (request) {
           Actors: ${Actors}
         `)
       })
-      .catch(e => console.log(e))  
+      .catch(e => console.log(e))
     break
 
   case 'do-what-it-says':
