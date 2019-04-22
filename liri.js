@@ -1,13 +1,19 @@
 require('dotenv').config()
 var keys = require('./keys.js')
 var Spotify = require('node-spotify-api');
+const axios = require('axios')
 var [, , request, ...search] = process.argv
 
 var spotify = new Spotify(keys.spotify)
 
 switch (request) {
   case 'concert-this':
-
+    // axios.get(`https://rest.bandsintown.com/artists/${search.join(' ')}/events?app_id=codingbootcamp&date=upcoming`)
+    // .then(response => {
+    //   console.log(response);
+      
+    // })
+    // .catch(e => console.log(e))
     break
 
   case 'spotify-this-song':
@@ -44,7 +50,22 @@ switch (request) {
     break
 
   case 'movie-this':
-
+      axios.get(`http://www.omdbapi.com/?t=${search.join(' ')}&apikey=f8894189`)
+      .then(({ data }) => {
+        // console.log(data)
+        let {Title, Year, imdbRating, Ratings, Country, Language, Plot, Actors} = data
+        console.log(`
+          Title: ${Title}
+          Year: ${Year}
+          imdb Rating: ${imdbRating}
+          Rotten Tomatoes: ${Ratings[1].Value}
+          Country: ${Country}
+          Language: ${Language}
+          Plot: ${Plot}
+          Actors: ${Actors}
+        `)
+      })
+      .catch(e => console.log(e))  
     break
 
   case 'do-what-it-says':
