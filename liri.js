@@ -3,9 +3,35 @@ const keys = require('./keys.js')
 const Spotify = require('node-spotify-api');
 const axios = require('axios')
 const fs = require('fs')
+const moment = require('moment')
+
 var [, , request, ...search] = process.argv
 
 var spotify = new Spotify(keys.spotify)
+
+
+  axios.get(`https://rest.bandsintown.com/artists/wayne%20hancock/events?app_id=codingbootcamp&date=upcoming`)
+    .then(({ data }) => {
+      // console.log(data[0]);
+      // console.log(data[0].datetime);
+      // let date = data[0].datetime.split('T')[0]
+      // let time = data[0].datetime.split('T')[1]
+
+      // let testDate = moment(data[0].datetime).format("MMMM Do, YYYY")
+      // let testTime = moment(data[0].datetime).format("LT")
+      
+      data.forEach((items, i) => {
+        let date = moment(items.datetime).format("MMMM Do, YYYY")
+        let time = moment(items.datetime).format("LT")
+        console.log(`
+          Venue: ${items.venue.name}
+          Location: ${items.venue.city}, ${items.venue.region}
+          Time: ${date} at ${time}
+        `)
+      })
+    })
+    .catch(e => console.log(e))
+
 
 let spotSearch = (goLook) => {
   var spotify = new Spotify(keys.spotify)
@@ -94,12 +120,8 @@ fs.readFile('random.txt', 'UTF8', (e, data) => {
 
 switch (request) {
   case 'concert-this':
-    // axios.get(`https://rest.bandsintown.com/artists/${search.join(' ')}/events?app_id=codingbootcamp&date=upcoming`)
-    // .then(response => {
-    //   console.log(response);
+    bandsTour()
 
-    // })
-    // .catch(e => console.log(e))
     break
 
   case 'spotify-this-song':
