@@ -9,8 +9,8 @@ var [, , request, ...search] = process.argv
 
 var spotify = new Spotify(keys.spotify)
 
-
-  axios.get(`https://rest.bandsintown.com/artists/wayne%20hancock/events?app_id=codingbootcamp&date=upcoming`)
+let bandsTour = (goLook) => {
+  axios.get(`https://rest.bandsintown.com/artists/${goLook.join(' ')}/events?app_id=codingbootcamp&date=upcoming`)
     .then(({ data }) => {
       // console.log(data[0]);
       // console.log(data[0].datetime);
@@ -19,7 +19,7 @@ var spotify = new Spotify(keys.spotify)
 
       // let testDate = moment(data[0].datetime).format("MMMM Do, YYYY")
       // let testTime = moment(data[0].datetime).format("LT")
-      
+
       data.forEach((items, i) => {
         let date = moment(items.datetime).format("MMMM Do, YYYY")
         let time = moment(items.datetime).format("LT")
@@ -31,6 +31,7 @@ var spotify = new Spotify(keys.spotify)
       })
     })
     .catch(e => console.log(e))
+}
 
 
 let spotSearch = (goLook) => {
@@ -120,7 +121,7 @@ fs.readFile('random.txt', 'UTF8', (e, data) => {
 
 switch (request) {
   case 'concert-this':
-    bandsTour()
+    bandsTour(search)
 
     break
 
