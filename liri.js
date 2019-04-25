@@ -141,7 +141,7 @@ switch (request) {
         } else if (doSearch[0] === 'movie-this') {
           spotMovie(searchArry)
         } else {
-          console.log('error');
+          console.log('Enter the correct selection and search param: concert-this, spotify-this-song, movie-this');
         }
       }
     })
