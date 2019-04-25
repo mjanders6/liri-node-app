@@ -36,7 +36,6 @@ let bandsTour = (goLook) => {
     .catch(e => console.log(e))
 }
 
-
 let spotSearch = (goLook) => {
   var spotify = new Spotify(keys.spotify)
 
@@ -146,7 +145,7 @@ switch (request) {
         let searchArry = doSearch[1].slice(1, doSearch[1].length - 1).split(' ')
         
         console.log(searchArry);
-        // spotSearch(doSearch)
+        spotSearch(searchArry)
         
 
       }
