@@ -7,9 +7,6 @@ const moment = require('moment')
 
 var [, , request, ...search] = process.argv
 
-console.log(search)
-
-
 var spotify = new Spotify(keys.spotify)
 
 let bandsTour = (goLook) => {
@@ -104,19 +101,14 @@ let spotMovie = (goLook) => {
 
 const arrFun = (data) => {
   let arry = []
-  let srch = []
   let bestArry = data.split(',')
   bestArry.forEach((item, i) => {
     arry.push(item)
   })
-
-  // let searchArry = arry[1].slice(1, arry[1].length - 1).split(' ')
-
-  // console.log(arry[1].slice(1, arry[1].length - 1).split(' '))
-  // console.log(searchArry);
-  
   return arry
 }
+
+
 
 switch (request) {
   case 'concert-this':
@@ -140,14 +132,17 @@ switch (request) {
         console.log(e)
       } else {
         let doSearch = arrFun(data)
-        console.log(doSearch[0])
-
         let searchArry = doSearch[1].slice(1, doSearch[1].length - 1).split(' ')
         
-        console.log(searchArry);
-        spotSearch(searchArry)
-        
-
+        if (doSearch[0] === 'concert-this') {
+          bandsTour(searchArry)
+        } else if (doSearch[0] === 'spotify-this-song') {
+          spotSearch(searchArry)
+        } else if (doSearch[0] === 'movie-this') {
+          spotMovie(searchArry)
+        } else {
+          console.log('error');
+        }
       }
     })
     break
