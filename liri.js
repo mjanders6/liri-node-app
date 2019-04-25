@@ -108,8 +108,6 @@ const arrFun = (data) => {
   return arry
 }
 
-
-
 switch (request) {
   case 'concert-this':
     bandsTour(search)
