@@ -7,6 +7,9 @@ const moment = require('moment')
 
 var [, , request, ...search] = process.argv
 
+console.log(search)
+
+
 var spotify = new Spotify(keys.spotify)
 
 let bandsTour = (goLook) => {
@@ -102,22 +105,19 @@ let spotMovie = (goLook) => {
 
 const arrFun = (data) => {
   let arry = []
-  let bestArry = data.split(', ')
+  let srch = []
+  let bestArry = data.split(',')
   bestArry.forEach((item, i) => {
-    // console.log(`${item}`)
     arry.push(item)
   })
-  // console.log( arry[1].slice(1, arry[1].length - 1) )  
+
+  // let searchArry = arry[1].slice(1, arry[1].length - 1).split(' ')
+
+  // console.log(arry[1].slice(1, arry[1].length - 1).split(' '))
+  // console.log(searchArry);
+  
+  return arry
 }
-
-fs.readFile('random.txt', 'UTF8', (e, data) => {
-  if (e) {
-    console.log(e)
-  } else {
-    arrFun(data)
-
-  }
-})
 
 switch (request) {
   case 'concert-this':
@@ -136,7 +136,21 @@ switch (request) {
     break
 
   case 'do-what-it-says':
+    fs.readFile('random.txt', 'UTF8', (e, data) => {
+      if (e) {
+        console.log(e)
+      } else {
+        let doSearch = arrFun(data)
+        console.log(doSearch[0])
 
+        let searchArry = doSearch[1].slice(1, doSearch[1].length - 1).split(' ')
+        
+        console.log(searchArry);
+        // spotSearch(doSearch)
+        
+
+      }
+    })
     break
 
   default:
