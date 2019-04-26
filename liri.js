@@ -5,14 +5,18 @@ const axios = require('axios')
 const fs = require('fs')
 const moment = require('moment')
 
+// grab whats on the console
 var [, , request, ...search] = process.argv
 
+// get the keys for spotify
 var spotify = new Spotify(keys.spotify)
 
+// function for the get request to bands in town
 let bandsTour = (goLook) => {
   axios.get(`https://rest.bandsintown.com/artists/${goLook.join(' ')}/events?app_id=codingbootcamp&date=upcoming`)
     .then(({ data }) => {
       console.log(data);
+      // testing out the information from the get request. 
       // console.log(data[0].datetime);
       // let date = data[0].datetime.split('T')[0]
       // let time = data[0].datetime.split('T')[1]
@@ -20,9 +24,11 @@ let bandsTour = (goLook) => {
       // let testDate = moment(data[0].datetime).format("MMMM Do, YYYY")
       // let testTime = moment(data[0].datetime).format("LT")
 
+      // loop through the response 
       data.forEach((items, i) => {
         let date = moment(items.datetime).format("MMMM Do, YYYY")
         let time = moment(items.datetime).format("LT")
+        // log the response to the console 
         console.log(`
           Venue: ${items.venue.name}
           Location: ${items.venue.city}, ${items.venue.region}
@@ -32,10 +38,11 @@ let bandsTour = (goLook) => {
     })
     .catch(e => console.log(e))
 }
-
+// function for the get request to spotify
 let spotSearch = (goLook) => {
   var spotify = new Spotify(keys.spotify)
 
+  // condition for a blank entry
   let searchTerm = _ => {
     if (goLook.join(' ').length < 1) {
       // let search = 'the room'
@@ -47,12 +54,12 @@ let spotSearch = (goLook) => {
       return goLook.join(' ')
     }
   }
-
+// spotify request
   spotify
     .search({ type: 'track', query: searchTerm(), limit: 5 })
     .then(r => {
       let trackSearch = r.tracks.items
-      
+      // loop through the tracks to get the albums
       trackSearch.forEach((trck, i) => {
 
         console.log(`
@@ -67,9 +74,9 @@ let spotSearch = (goLook) => {
       console.log(err);
     });
 }
-
+// function for a movie search
 let spotMovie = (goLook) => {
-
+  // conditional for no entry 
   let movieSearch = _ => {
 
     if (goLook.join(' ').length < 1) {
@@ -80,10 +87,11 @@ let spotMovie = (goLook) => {
       return goLook.join(' ')
     }
   }
-
+  // get request for a movie
   axios.get(`http://www.omdbapi.com/?t=${movieSearch()}&apikey=f8894189`)
     .then(({ data }) => {
       // console.log(data)
+      // 
       let { Title, Year, imdbRating, Ratings, Country, Language, Plot, Actors } = data
       console.log(`
         Title: ${Title}
@@ -98,7 +106,7 @@ let spotMovie = (goLook) => {
     })
     .catch(e => console.log(e))
 }
-
+// function to split items read from the random.txt file
 const arrFun = (data) => {
   let arry = []
   let bestArry = data.split(',')
@@ -107,7 +115,7 @@ const arrFun = (data) => {
   })
   return arry
 }
-
+// switch case to call the function for the request. 
 switch (request) {
   case 'concert-this':
     bandsTour(search)
@@ -125,6 +133,7 @@ switch (request) {
     break
 
   case 'do-what-it-says':
+  // read in the random.txt file 
     fs.readFile('random.txt', 'UTF8', (e, data) => {
       if (e) {
         console.log(e)
