@@ -12,7 +12,7 @@ var spotify = new Spotify(keys.spotify)
 let bandsTour = (goLook) => {
   axios.get(`https://rest.bandsintown.com/artists/${goLook.join(' ')}/events?app_id=codingbootcamp&date=upcoming`)
     .then(({ data }) => {
-      // console.log(data[0]);
+      console.log(data);
       // console.log(data[0].datetime);
       // let date = data[0].datetime.split('T')[0]
       // let time = data[0].datetime.split('T')[1]
@@ -52,7 +52,7 @@ let spotSearch = (goLook) => {
     .search({ type: 'track', query: searchTerm(), limit: 5 })
     .then(r => {
       let trackSearch = r.tracks.items
-
+      
       trackSearch.forEach((trck, i) => {
 
         console.log(`
